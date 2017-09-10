@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.TextView
 import com.kennyrozario.pomodoro.pomodoro.R
 import com.kennyrozario.pomodoro.pomodoro.kotterknife.bindView
-import com.kennyrozario.pomodoro.pomodoro.utils.convertToMinsAndSeconds
 
 class TimerActivity : AppCompatActivity(), TimerContract.View, View.OnClickListener {
 
@@ -19,11 +18,8 @@ class TimerActivity : AppCompatActivity(), TimerContract.View, View.OnClickListe
     val longBreak: Button by bindView(R.id.long_button)
 
     private var countDownTimer: CountDownTimer? = null
-
     private val timerPresenter = TimerPresenter(this)
 
-    private var timerState: TimerState = TimerState.INACTIVE
-    private var timeLeft: Long = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,46 +32,25 @@ class TimerActivity : AppCompatActivity(), TimerContract.View, View.OnClickListe
 
     override fun onClick(v: View?) {
         v?.let {
-
             when (it.id) {
                 R.id.short_button -> timerPresenter.onShortBreakButtonPressed()
 
-                R.id.play_pause_button -> {
-
-                    when (timerState) {
-
-                        TimerState.INACTIVE -> timerPresenter.onPlayPressedFromInactiveState()
-
-                        TimerState.PAUSED -> timerPresenter.onPlayPressedFromPausedState()
-
-                        TimerState.ACTIVE -> timerPresenter.onPausePressed()
-                    }
-                }
+                R.id.play_pause_button -> timerPresenter.onPlayPausePressed()
 
                 R.id.long_button -> timerPresenter.onLongBreakButtonPressed()
             }
         }
     }
 
-    override fun beginDefaultTimer() {
-        timerState = TimerState.ACTIVE
-
-        val defaultTime = "25:00"
-        timer.text = defaultTime
-        playPause.setImageDrawable(getDrawable(R.drawable.ic_pause))
-
-        countDownTimer = object : CountDownTimer(60000, 1000) {
+    override fun beginTimer(duration: Long, timeInterval: Long) {
+        countDownTimer = object : CountDownTimer(duration, timeInterval) {
 
             override fun onTick(millisUntilFinished: Long) {
-                timeLeft = millisUntilFinished
-                timer.text = convertToMinsAndSeconds(millisUntilFinished)
+                timerPresenter.onTick(millisUntilFinished)
             }
 
             override fun onFinish() {
-                val defaultFinishedTime = "0:00"
-                timerState = TimerState.INACTIVE
-                timer.text = defaultFinishedTime
-                playPause.setImageDrawable(getDrawable(R.drawable.ic_play))
+                timerPresenter.onCountDownTimerFinished()
             }
         }
 
@@ -84,31 +59,19 @@ class TimerActivity : AppCompatActivity(), TimerContract.View, View.OnClickListe
 
     override fun pauseTimer() {
         countDownTimer?.cancel()
-        timerState = TimerState.PAUSED
         playPause.setImageDrawable(getDrawable(R.drawable.ic_play))
-        timer.text = convertToMinsAndSeconds(timeLeft)
     }
 
-    override fun resumeTimer() {
-        timerState = TimerState.ACTIVE
+    override fun showPlayButton() {
+        playPause.setImageDrawable(getDrawable(R.drawable.ic_play))
+    }
+
+    override fun showPauseButton() {
         playPause.setImageDrawable(getDrawable(R.drawable.ic_pause))
+    }
 
-        countDownTimer = object : CountDownTimer(timeLeft, 1000) {
-
-            override fun onTick(millisUntilFinished: Long) {
-                timeLeft = millisUntilFinished
-                timer.text = convertToMinsAndSeconds(millisUntilFinished)
-            }
-
-            override fun onFinish() {
-                val defaultFinishedTime = "0:00"
-                timerState = TimerState.INACTIVE
-                timer.text = defaultFinishedTime
-                playPause.setImageDrawable(getDrawable(R.drawable.ic_play))
-            }
-        }
-
-        countDownTimer?.start()
+    override fun updateTimerText(timeLeft: String) {
+        timer.text = timeLeft
     }
 
     override fun onDestroy() {

@@ -4,23 +4,27 @@ interface TimerContract {
 
     interface View {
 
-        fun beginDefaultTimer()
+        fun beginTimer(duration: Long, timeInterval: Long)
 
         fun pauseTimer()
 
-        fun resumeTimer()
+        fun updateTimerText(timeLeft: String)
+
+        fun showPlayButton()
+
+        fun showPauseButton()
     }
 
     interface Presenter {
 
-        fun onPlayPressedFromInactiveState()
-
-        fun onPlayPressedFromPausedState()
-
-        fun onPausePressed()
+        fun onPlayPausePressed()
 
         fun onShortBreakButtonPressed()
 
         fun onLongBreakButtonPressed()
+
+        fun onTick(millisLeft: Long)
+
+        fun onCountDownTimerFinished()
     }
 }
