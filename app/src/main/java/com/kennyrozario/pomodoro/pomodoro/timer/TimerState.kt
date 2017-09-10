@@ -1,4 +1,4 @@
-package com.kennyrozario.pomodoro.pomodoro.Timer
+package com.kennyrozario.pomodoro.pomodoro.timer
 
 enum class TimerState {
     ACTIVE,
