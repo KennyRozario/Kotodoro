@@ -13,6 +13,8 @@ interface TimerContract {
         fun showPlayButton()
 
         fun showPauseButton()
+
+        fun beginAlarm()
     }
 
     interface Presenter {

@@ -1,5 +1,8 @@
 package com.kennyrozario.pomodoro.pomodoro.timer
 
+import android.media.Ringtone
+import android.media.RingtoneManager
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -17,9 +20,8 @@ class TimerActivity : AppCompatActivity(), TimerContract.View, View.OnClickListe
     val playPause: FloatingActionButton by bindView(R.id.play_pause_button)
     val longBreak: Button by bindView(R.id.long_button)
 
+    private val presenter = TimerPresenter(this)
     private var countDownTimer: CountDownTimer? = null
-    private val timerPresenter = TimerPresenter(this)
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +35,11 @@ class TimerActivity : AppCompatActivity(), TimerContract.View, View.OnClickListe
     override fun onClick(v: View?) {
         v?.let {
             when (it.id) {
-                R.id.short_button -> timerPresenter.onShortBreakButtonPressed()
+                R.id.short_button -> presenter.onShortBreakButtonPressed()
 
-                R.id.play_pause_button -> timerPresenter.onPlayPausePressed()
+                R.id.play_pause_button -> presenter.onPlayPausePressed()
 
-                R.id.long_button -> timerPresenter.onLongBreakButtonPressed()
+                R.id.long_button -> presenter.onLongBreakButtonPressed()
             }
         }
     }
@@ -46,15 +48,34 @@ class TimerActivity : AppCompatActivity(), TimerContract.View, View.OnClickListe
         countDownTimer = object : CountDownTimer(duration, timeInterval) {
 
             override fun onTick(millisUntilFinished: Long) {
-                timerPresenter.onTick(millisUntilFinished)
+                presenter.onTick(millisUntilFinished)
             }
 
             override fun onFinish() {
-                timerPresenter.onCountDownTimerFinished()
+                presenter.onCountDownTimerFinished()
             }
         }
 
         countDownTimer?.start()
+    }
+
+    override fun beginAlarm() {
+        val alarmUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        val alarm: Ringtone = RingtoneManager.getRingtone(this, alarmUri)
+
+        alarm.play()
+        val alarmTimer = object : CountDownTimer(5000, 1000) {
+
+            override fun onTick(millisUntilFinish: Long) {
+                // Do Nothing
+            }
+
+            override fun onFinish() {
+                alarm.stop()
+            }
+        }
+
+        alarmTimer.start()
     }
 
     override fun pauseTimer() {

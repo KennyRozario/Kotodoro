@@ -4,9 +4,11 @@ import com.kennyrozario.pomodoro.pomodoro.utils.convertToMinsAndSeconds
 
 class TimerPresenter constructor(private val view: TimerContract.View) : TimerContract.Presenter {
 
-    private val defaultDuration = 60000L // milliseconds
     private val timeInterval = 1000L // milliseconds
     private val defaultFinishedTime = "0:00"
+    private val defaultDuration = 10000L // milliseconds
+    private val defaultShortBreakDuration = 50000L // milliseconds
+    private val defaultLongBreakDuration = 15000L // milliseconds
 
     private var millisLeft: Long = 0L
     private var timerState: TimerState = TimerState.INACTIVE
@@ -40,11 +42,18 @@ class TimerPresenter constructor(private val view: TimerContract.View) : TimerCo
     }
 
     override fun onShortBreakButtonPressed() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        view.pauseTimer()
+        timerState = TimerState.ACTIVE
+        view.beginTimer(defaultShortBreakDuration, timeInterval)
+        view.showPauseButton()
     }
 
     override fun onLongBreakButtonPressed() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        view.pauseTimer()
+        timerState = TimerState.ACTIVE
+        view.beginTimer(defaultLongBreakDuration, timeInterval)
+        view.showPauseButton()
+
     }
 
     override fun onTick(millisLeft: Long) {
@@ -56,5 +65,6 @@ class TimerPresenter constructor(private val view: TimerContract.View) : TimerCo
         timerState = TimerState.INACTIVE
         view.updateTimerText(defaultFinishedTime)
         view.showPlayButton()
+        view.beginAlarm()
     }
 }
