@@ -1,4 +1,4 @@
-package com.kennyrozario.pomodoro.pomodoro.utils
+package com.kennyrozario.kotodoro.utils
 
 import java.util.concurrent.TimeUnit
 

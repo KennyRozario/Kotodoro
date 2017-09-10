@@ -6,7 +6,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
     defaultConfig {
-        applicationId "com.kennyrozario.pomodoro"
+        applicationId "com.kennyrozario.kotodoro"
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1

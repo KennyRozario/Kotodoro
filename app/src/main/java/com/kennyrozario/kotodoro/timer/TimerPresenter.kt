@@ -1,6 +1,6 @@
-package com.kennyrozario.pomodoro.pomodoro.timer
+package com.kennyrozario.kotodoro.timer
 
-import com.kennyrozario.pomodoro.pomodoro.utils.convertToMinsAndSeconds
+import com.kennyrozario.kotodoro.utils.convertToMinsAndSeconds
 
 class TimerPresenter constructor(private val view: TimerContract.View) : TimerContract.Presenter {
 

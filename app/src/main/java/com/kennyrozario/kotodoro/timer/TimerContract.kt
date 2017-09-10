@@ -1,4 +1,4 @@
-package com.kennyrozario.pomodoro.pomodoro.timer
+package com.kennyrozario.kotodoro.timer
 
 interface TimerContract {
 

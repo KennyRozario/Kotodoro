@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pomodoro</string>
+    <string name="app_name">Kotodoro</string>
     <string name="short_break_button">short</string>
     <string name="long_break_button">long</string>
 </resources>

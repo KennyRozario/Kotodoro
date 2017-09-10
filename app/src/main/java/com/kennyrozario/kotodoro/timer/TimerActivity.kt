@@ -1,4 +1,4 @@
-package com.kennyrozario.pomodoro.pomodoro.timer
+package com.kennyrozario.kotodoro.timer
 
 import android.media.Ringtone
 import android.media.RingtoneManager
@@ -10,8 +10,8 @@ import android.support.design.widget.FloatingActionButton
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import com.kennyrozario.pomodoro.pomodoro.R
-import com.kennyrozario.pomodoro.pomodoro.kotterknife.bindView
+import com.kennyrozario.kotodoro.R
+import com.kennyrozario.kotodoro.kotterknife.bindView
 
 class TimerActivity : AppCompatActivity(), TimerContract.View, View.OnClickListener {
 
