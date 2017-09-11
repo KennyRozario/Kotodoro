@@ -15,10 +15,10 @@ import com.kennyrozario.kotodoro.kotterknife.bindView
 
 class TimerActivity : AppCompatActivity(), TimerContract.View, View.OnClickListener {
 
-    val timer: TextView by bindView(R.id.time_left)
-    val shortBreak: Button by bindView(R.id.short_button)
-    val playPause: FloatingActionButton by bindView(R.id.play_pause_button)
-    val longBreak: Button by bindView(R.id.long_button)
+    private val timer: TextView by bindView(R.id.time_left)
+    private val shortBreak: Button by bindView(R.id.short_button)
+    private val playPause: FloatingActionButton by bindView(R.id.play_pause_button)
+    private val longBreak: Button by bindView(R.id.long_button)
 
     private val presenter = TimerPresenter(this)
     private var countDownTimer: CountDownTimer? = null
