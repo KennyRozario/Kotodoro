@@ -5,3 +5,8 @@ enum class TimerState {
 	PAUSED,
 	INACTIVE
 }
+
+enum class TimerType {
+	POMODORO,
+	BREAK
+}

@@ -5,16 +5,17 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "kotlin-allopen"
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.kennyrozario.kotodoro"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -22,10 +23,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 ext {
-    support = '25.4.0'
+    support = '26.0.0-beta1'
     butterknife = '8.8.1'
     dagger = '2.15'
     rx = '2.1.12'
@@ -57,4 +63,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
     implementation 'nl.littlerobots.rxlint:rxlint:1.6.1'
+
+    implementation 'com.groupon.grox:grox-core-rx2:1.1.1'
+    implementation 'com.groupon.grox:grox-commands-rx2:1.1.1'
 }

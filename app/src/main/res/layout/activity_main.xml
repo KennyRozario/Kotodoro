@@ -34,7 +34,7 @@
             android:id="@+id/play_pause_button"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:src="@drawable/ic_play"/>
+            android:src="@drawable/ic_play_arrow_white"/>
 
         <Button
             android:id="@+id/long_button"

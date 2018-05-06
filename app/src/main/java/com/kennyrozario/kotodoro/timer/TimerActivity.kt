@@ -40,7 +40,6 @@ class TimerActivity : AppCompatActivity() {
 			(application as App).appComponent
 					.timer()
 					.layout(layout)
-					.timer(Timer())
 					.build()
 					.injectMembers(this)
 
@@ -60,9 +59,6 @@ interface TimerComponent : MembersInjector<TimerActivity> {
 
 		@BindsInstance
 		fun layout(timerLayout: TimerLayout): Builder
-
-		@BindsInstance
-		fun timer(timer: Timer): Builder
 	}
 
 	@Module
@@ -72,8 +68,10 @@ interface TimerComponent : MembersInjector<TimerActivity> {
 		@ActivityScope
 		fun features(
 				timerUpdates: TimerUpdatesFeature,
+				playPause: PlayPauseFeature,
 				shortBreak: ShortBreakFeature,
 				longBreak: LongBreakFeature
-		): List<@JvmSuppressWildcards Feature> = listOf(timerUpdates, shortBreak, longBreak)
+		): List<@JvmSuppressWildcards Feature> = listOf(timerUpdates, playPause, shortBreak,
+				longBreak)
 	}
 }

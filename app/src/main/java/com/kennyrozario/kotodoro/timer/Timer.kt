@@ -9,26 +9,29 @@ import javax.inject.Inject
 private const val INTERVAL_IN_MILLISECONDS = 1000L
 
 @ActivityScope
-class Timer @Inject constructor() {
+class Timer @Inject constructor(
+		private val store: TimerStore
+) {
 
-	private val timerProgression = PublishSubject.create<Long>()
 	private val timerCompletion = PublishSubject.create<Any>()
-
-	val timerTicks get() = timerProgression as Observable<Long>
 	val timerFinish get() = timerCompletion as Observable<Any>
 
-	private lateinit var countDownTimer: CountDownTimer
+	private var countDownTimer: CountDownTimer? = null
 
 	fun startTimer(duration: Long) {
 		countDownTimer = object : CountDownTimer(duration, INTERVAL_IN_MILLISECONDS) {
 
-			override fun onTick(timeLeft: Long) = timerProgression.onNext(timeLeft)
+			override fun onTick(timeLeft: Long) = store.setTimeLeft(timeLeft)
 
-			override fun onFinish() = timerCompletion.onNext(Any())
+			override fun onFinish() {
+				store.setTimerState(TimerState.INACTIVE)
+				store.setTimeLeft(0L)
+			}
 		}
 
-		countDownTimer.start()
+		store.setTimerState(TimerState.ACTIVE)
+		countDownTimer!!.start()
 	}
 
-	fun stopTimer() = countDownTimer.cancel()
+	fun stopTimer() = countDownTimer?.cancel()
 }

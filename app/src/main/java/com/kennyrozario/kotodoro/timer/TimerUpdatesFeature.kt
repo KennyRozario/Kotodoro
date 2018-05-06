@@ -9,12 +9,13 @@ private const val DEFAULT_TIME_TEXT = "0:00"
 
 class TimerUpdatesFeature @Inject constructor(
 		private val view: TimerLayout,
-		private val timer: Timer
+		private val timer: Timer,
+		private val store: TimerStore
 ) : DisposableFeature() {
 
 	override fun start() {
-		timer.timerTicks
-				.subscribeSafely { view.setTime(it.toReadableTime()) }
+		store.observe()
+				.subscribeSafely { view.setTime(it.timeLeft.toReadableTime()) }
 				.let(subscription::add)
 
 		timer.timerFinish

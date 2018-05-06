@@ -1,6 +1,7 @@
 package com.kennyrozario.kotodoro.timer
 
 import android.content.Context
+import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.design.widget.FloatingActionButton
 import android.view.Gravity.CENTER
@@ -38,6 +39,10 @@ open class TimerLayout : AnkoComponent<Context> {
 		time.text = timeValue
 	}
 
+	fun setIcon(@DrawableRes iconId: Int) {
+		playPause.setImageResource(iconId)
+	}
+
 	private fun _LinearLayout.timer() = textView {
 		lparams(width = matchParent, height = dip(0), weight = 75f) { setGravity(CENTER) }
 		text = "25:00"
@@ -57,7 +62,7 @@ open class TimerLayout : AnkoComponent<Context> {
 
 	private fun _LinearLayout.playPause() = floatingActionButton {
 		lparams(height = dip(64), width = dip(64))
-		imageResource = R.drawable.ic_play
+		imageResource = R.drawable.ic_play_arrow_white
 	}.let { playPause = it }
 
 	private fun _LinearLayout.longBreak() =
