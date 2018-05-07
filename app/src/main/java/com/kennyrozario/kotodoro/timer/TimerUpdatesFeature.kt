@@ -21,6 +21,7 @@ class TimerUpdatesFeature @Inject constructor(
 		timer.timerFinish
 				.subscribeSafely {
 					view.setTime(DEFAULT_TIME_TEXT)
+					view.hideInProgressText()
 					timer.stopTimer()
 				}
 				.let(subscription::add)

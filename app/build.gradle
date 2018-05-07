@@ -28,6 +28,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kapt {
+        generateStubs = true
+    }
 }
 
 ext {
@@ -66,4 +70,6 @@ dependencies {
 
     implementation 'com.groupon.grox:grox-core-rx2:1.1.1'
     implementation 'com.groupon.grox:grox-commands-rx2:1.1.1'
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.41"
 }

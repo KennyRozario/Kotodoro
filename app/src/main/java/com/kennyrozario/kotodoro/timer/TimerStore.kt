@@ -6,6 +6,8 @@ import com.kennyrozario.kotodoro.dagger.ActivityScope
 import io.reactivex.Observable
 import javax.inject.Inject
 
+private const val DEFAULT_TIME_IN_MILLIS = 1500000L
+
 data class TimerInformation(
 		val state: TimerState,
 		val type: TimerType,
@@ -18,7 +20,7 @@ class TimerStore @Inject constructor() {
 	private val store: Store<TimerInformation> = Store(TimerInformation(
 			TimerState.INACTIVE,
 			TimerType.POMODORO,
-			0L
+			DEFAULT_TIME_IN_MILLIS
 	))
 
 	fun observe(): Observable<TimerInformation> = RxStores.states(store).share().map { it }

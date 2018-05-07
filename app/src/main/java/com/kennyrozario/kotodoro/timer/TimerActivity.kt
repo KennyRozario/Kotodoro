@@ -1,5 +1,6 @@
 package com.kennyrozario.kotodoro.timer
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.kennyrozario.kotodoro.app.App
@@ -40,6 +41,7 @@ class TimerActivity : AppCompatActivity() {
 			(application as App).appComponent
 					.timer()
 					.layout(layout)
+					.context(this)
 					.build()
 					.injectMembers(this)
 
@@ -59,6 +61,9 @@ interface TimerComponent : MembersInjector<TimerActivity> {
 
 		@BindsInstance
 		fun layout(timerLayout: TimerLayout): Builder
+
+		@BindsInstance
+		fun context(context: Context): Builder
 	}
 
 	@Module

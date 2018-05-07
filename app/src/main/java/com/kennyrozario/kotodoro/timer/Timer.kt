@@ -24,6 +24,7 @@ class Timer @Inject constructor(
 			override fun onTick(timeLeft: Long) = store.setTimeLeft(timeLeft)
 
 			override fun onFinish() {
+				timerCompletion.onNext(Any())
 				store.setTimerState(TimerState.INACTIVE)
 				store.setTimeLeft(0L)
 			}

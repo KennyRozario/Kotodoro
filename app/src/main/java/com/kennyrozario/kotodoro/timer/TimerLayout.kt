@@ -11,6 +11,8 @@ import android.widget.TextView
 import com.jakewharton.rxbinding2.view.RxView
 import com.kennyrozario.kotodoro.R
 import com.kennyrozario.kotodoro.anko.materialMargin
+import com.kennyrozario.kotodoro.anko.materialMarginSmall
+import com.kennyrozario.kotodoro.anko.selectableItemBackgroundResource
 import com.kennyrozario.kotodoro.dagger.ActivityScope
 import org.jetbrains.anko.*
 import org.jetbrains.anko.design.floatingActionButton
@@ -19,6 +21,7 @@ import org.jetbrains.anko.design.floatingActionButton
 open class TimerLayout : AnkoComponent<Context> {
 
 	private lateinit var time: TextView
+	private lateinit var inProgressState: TextView
 
 	private lateinit var shortBreak: Button
 	val shortBreakClicks by lazy { RxView.clicks(shortBreak).share() }
@@ -31,6 +34,7 @@ open class TimerLayout : AnkoComponent<Context> {
 
 	override fun createView(ui: AnkoContext<Context>): View = ui.verticalLayout {
 		padding = materialMargin
+		inProgressState()
 		timer()
 		actions()
 	}
@@ -43,15 +47,29 @@ open class TimerLayout : AnkoComponent<Context> {
 		playPause.setImageResource(iconId)
 	}
 
+	fun setInProgressText(text: String) {
+		inProgressState.text = text
+		inProgressState.visibility = View.VISIBLE
+	}
+
+	fun hideInProgressText() {
+		inProgressState.visibility = View.INVISIBLE
+	}
+
 	private fun _LinearLayout.timer() = textView {
-		lparams(width = matchParent, height = dip(0), weight = 75f) { setGravity(CENTER) }
-		text = "25:00"
+		lparams(width = matchParent, height = dip(0), weight = 70f) { setGravity(CENTER) }
 		textSize = 48f
 		backgroundResource = R.drawable.timer_outline
 	}.let { time = it }
 
+	private fun _LinearLayout.inProgressState() = textView {
+		lparams(width = matchParent, height = dip(0), weight = 10f) { setGravity(CENTER) }
+		textSize = 18f
+		visibility = View.INVISIBLE
+	}.let { inProgressState = it }
+
 	private fun _LinearLayout.actions() = linearLayout {
-		lparams(width = matchParent, height = dip(0), weight = 25f) { setGravity(CENTER) }
+		lparams(width = matchParent, height = dip(0), weight = 20f) { setGravity(CENTER) }
 		shortBreak()
 		playPause()
 		longBreak()
@@ -71,5 +89,7 @@ open class TimerLayout : AnkoComponent<Context> {
 	private fun _LinearLayout.breakButton(@StringRes textId: Int) = button {
 		textResource = textId
 		backgroundColor = android.R.color.transparent
-	}
+		backgroundResource = context.selectableItemBackgroundResource
+		isClickable = true
+	}.lparams { horizontalMargin = materialMarginSmall }
 }

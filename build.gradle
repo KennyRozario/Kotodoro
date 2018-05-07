@@ -1,11 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-
-    ext {
-        kotlin_version = '1.2.31'
-        anko_version = '0.10.4'
-    }
+    ext.kotlin_version = '1.2.41'
+    ext.anko_version = '0.10.4'
 
     repositories {
         maven { url 'https://maven.google.com' }
@@ -14,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
 

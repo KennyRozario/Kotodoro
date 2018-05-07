@@ -2,4 +2,9 @@
     <string name="app_name">Kotodoro</string>
     <string name="short_break_button">short</string>
     <string name="long_break_button">long</string>
+
+    <string name="short_break">Short break</string>
+    <string name="long_break">Long break</string>
+    <string name="pomodoro">Pomodoro</string>
+    <string name="in_progress_state">%1$s is in progress</string>
 </resources>
