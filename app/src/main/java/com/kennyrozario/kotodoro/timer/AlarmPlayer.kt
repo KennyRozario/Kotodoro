@@ -1,7 +1,9 @@
 package com.kennyrozario.kotodoro.timer
 
 import android.content.Context
-import android.media.MediaPlayer
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.Ringtone
 import android.media.RingtoneManager
 import com.kennyrozario.kotodoro.base.Feature
 import com.kennyrozario.kotodoro.dagger.ActivityScope
@@ -12,7 +14,7 @@ class AlarmPlayer @Inject constructor(
 		private val context: Context
 ) : Feature {
 
-	private lateinit var mediaPlayer: MediaPlayer
+	private lateinit var alarm: Ringtone
 
 	override fun start() {
 		var alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
@@ -23,10 +25,14 @@ class AlarmPlayer @Inject constructor(
 			}
 		}
 
-		mediaPlayer = MediaPlayer.create(context, alarmUri)
-		mediaPlayer.isLooping = true
-		mediaPlayer.start()
+		alarm = RingtoneManager.getRingtone(context, alarmUri)
+		alarm.audioAttributes = AudioAttributes.Builder()
+				.setUsage(AudioAttributes.USAGE_ALARM)
+				.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+				.setLegacyStreamType(AudioManager.STREAM_ALARM)
+				.build()
+		alarm.play()
 	}
 
-	override fun stop() = mediaPlayer.stop()
+	override fun stop() = alarm.stop()
 }
