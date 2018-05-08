@@ -75,8 +75,13 @@ interface TimerComponent : MembersInjector<TimerActivity> {
 				timerUpdates: TimerUpdatesFeature,
 				playPause: PlayPauseFeature,
 				shortBreak: ShortBreakFeature,
-				longBreak: LongBreakFeature
-		): List<@JvmSuppressWildcards Feature> = listOf(timerUpdates, playPause, shortBreak,
-				longBreak)
+				longBreak: LongBreakFeature,
+				alarm: TimerAlarmFeature
+		): List<@JvmSuppressWildcards Feature> =
+				listOf(timerUpdates,
+						playPause,
+						shortBreak,
+						longBreak,
+						alarm)
 	}
 }

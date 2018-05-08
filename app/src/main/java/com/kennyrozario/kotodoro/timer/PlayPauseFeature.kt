@@ -2,6 +2,7 @@ package com.kennyrozario.kotodoro.timer
 
 import com.kennyrozario.kotodoro.R
 import com.kennyrozario.kotodoro.base.DisposableFeature
+import com.kennyrozario.kotodoro.dagger.ActivityScope
 import com.kennyrozario.kotodoro.utils.StringProvider
 import com.kennyrozario.kotodoro.utils.subscribeSafely
 import com.kennyrozario.kotodoro.utils.toReadableTime
@@ -9,6 +10,7 @@ import javax.inject.Inject
 
 private const val DEFAULT_POMODORO_TIME_IN_MILLIS = 15000L
 
+@ActivityScope
 class PlayPauseFeature @Inject constructor(
 		private val view: TimerLayout,
 		private val timer: Timer,

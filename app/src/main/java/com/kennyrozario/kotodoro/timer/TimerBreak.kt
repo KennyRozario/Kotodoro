@@ -2,6 +2,7 @@ package com.kennyrozario.kotodoro.timer
 
 import com.kennyrozario.kotodoro.R
 import com.kennyrozario.kotodoro.base.DisposableFeature
+import com.kennyrozario.kotodoro.dagger.ActivityScope
 import com.kennyrozario.kotodoro.utils.StringProvider
 import com.kennyrozario.kotodoro.utils.subscribeSafely
 import javax.inject.Inject
@@ -9,6 +10,7 @@ import javax.inject.Inject
 private const val SHORT_BREAK_DURATION_IN_MILLIS = 5000L
 private const val LONG_BREAK_DURATION_IN_MILLIS = 10000L
 
+@ActivityScope
 class ShortBreakFeature @Inject constructor(
 		private val view: TimerLayout,
 		private val timer: Timer,
@@ -29,6 +31,7 @@ class ShortBreakFeature @Inject constructor(
 	}
 }
 
+@ActivityScope
 class LongBreakFeature @Inject constructor(
 		private val view: TimerLayout,
 		private val timer: Timer,
