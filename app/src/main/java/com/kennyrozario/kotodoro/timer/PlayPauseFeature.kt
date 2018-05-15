@@ -3,20 +3,20 @@ package com.kennyrozario.kotodoro.timer
 import com.kennyrozario.kotodoro.R
 import com.kennyrozario.kotodoro.base.DisposableFeature
 import com.kennyrozario.kotodoro.dagger.ActivityScope
-import com.kennyrozario.kotodoro.utils.StringProvider
 import com.kennyrozario.kotodoro.utils.subscribeSafely
 import com.kennyrozario.kotodoro.utils.toReadableTime
 import javax.inject.Inject
 
-private const val DEFAULT_POMODORO_TIME_IN_MILLIS = 15000L
+private const val DEFAULT_POMODORO_TIME_IN_MILLIS = 1500000L
 
 @ActivityScope
 class PlayPauseFeature @Inject constructor(
 		private val view: TimerLayout,
 		private val timer: Timer,
-		private val store: TimerStore,
-		private val strings: StringProvider
+		private val store: TimerStore
 ) : DisposableFeature() {
+
+	private var pomodorosCompleted = 0
 
 	override fun start() {
 		store.observe()
@@ -31,6 +31,15 @@ class PlayPauseFeature @Inject constructor(
 		view.playPauseClicks
 				.flatMap { store.observe().take(1) }
 				.subscribeSafely(::updateTimerAndStore)
+				.let(subscription::add)
+
+		timer.timerFinish
+				.flatMap { store.observe().take(1) }
+				.subscribeSafely {
+					if (it.type == TimerType.POMODORO) {
+						pomodorosCompleted++
+					}
+				}
 				.let(subscription::add)
 	}
 
@@ -50,8 +59,6 @@ class PlayPauseFeature @Inject constructor(
 		store.setTimerType(TimerType.POMODORO)
 		view.setTime(DEFAULT_POMODORO_TIME_IN_MILLIS.toReadableTime())
 		timer.startTimer(DEFAULT_POMODORO_TIME_IN_MILLIS)
-		view.setInProgressText(
-				String.format(strings.get(R.string.in_progress_state),
-						strings.get(R.string.pomodoro)))
+		view.setAndShowNumOfPomodorosCompleted()
 	}
 }

@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton
 import android.view.Gravity.CENTER
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.jakewharton.rxbinding2.view.RxView
 import com.kennyrozario.kotodoro.R
@@ -21,7 +22,7 @@ import org.jetbrains.anko.design.floatingActionButton
 open class TimerLayout : AnkoComponent<Context> {
 
 	private lateinit var time: TextView
-	private lateinit var inProgressState: TextView
+	private lateinit var progress: ImageView
 
 	private lateinit var shortBreak: Button
 	val shortBreakClicks by lazy { RxView.clicks(shortBreak).share() }
@@ -37,7 +38,7 @@ open class TimerLayout : AnkoComponent<Context> {
 
 	override fun createView(ui: AnkoContext<Context>): View = ui.verticalLayout {
 		padding = materialMargin
-		inProgressState()
+		progressState()
 		timer()
 		actions()
 	}
@@ -50,13 +51,19 @@ open class TimerLayout : AnkoComponent<Context> {
 		playPause.setImageResource(iconId)
 	}
 
-	fun setInProgressText(text: String) {
-		inProgressState.text = text
-		inProgressState.visibility = View.VISIBLE
+	fun setAndShowNumOfPomodorosCompleted() = showProgress(R.drawable.red_tomato)
+
+	fun showShortBreak() = showProgress(R.drawable.coffee)
+
+	fun showLongBreak() = showProgress(R.drawable.vacation)
+
+	fun hideProgress() {
+		progress.visibility = View.INVISIBLE
 	}
 
-	fun hideInProgressText() {
-		inProgressState.visibility = View.INVISIBLE
+	fun showProgress(@DrawableRes background: Int) {
+		progress.visibility = View.VISIBLE
+		progress.backgroundResource = background
 	}
 
 	fun showStopAlarm(isVisible: Boolean) {
@@ -69,15 +76,17 @@ open class TimerLayout : AnkoComponent<Context> {
 
 	private fun _LinearLayout.timer() = textView {
 		lparams(width = matchParent, height = dip(0), weight = 70f) { setGravity(CENTER) }
-		textSize = 48f
+		textSize = 56f
 		backgroundResource = R.drawable.timer_outline
 	}.let { time = it }
 
-	private fun _LinearLayout.inProgressState() = textView {
-		lparams(width = matchParent, height = dip(0), weight = 10f) { setGravity(CENTER) }
-		textSize = 18f
-		visibility = View.INVISIBLE
-	}.let { inProgressState = it }
+	private fun _LinearLayout.progressState() =
+			imageView().lparams {
+				gravity = CENTER
+				width = dip(64)
+				height = dip(0)
+				weight = 10f
+			}.let { progress = it }
 
 	private fun _LinearLayout.actions() = linearLayout {
 		lparams(width = matchParent, height = dip(0), weight = 20f) { setGravity(CENTER) }

@@ -8,5 +8,6 @@ enum class TimerState {
 
 enum class TimerType {
 	POMODORO,
-	BREAK
+	SHORT_BREAK,
+	LONG_BREAK
 }
